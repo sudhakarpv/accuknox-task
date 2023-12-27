@@ -26,7 +26,6 @@ class UserLoginAPIView(APIView):
 
         if user and user.check_password(password):
             access_token = str(AccessToken.for_user(user))
-            print(access_token)
             return Response({'status': 1,
                             'message': "Signed in successfully",
                              'token': access_token,
@@ -70,7 +69,6 @@ class UserSearchAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         search_keyword = self.request.query_params.get('search')
-        print(search_keyword)
         if search_keyword:
             queryset = User.objects.filter(
                 Q(email__iexact=search_keyword) | Q(name__icontains=search_keyword))
@@ -81,7 +79,6 @@ class UserSearchAPIView(generics.ListAPIView):
 class SendFriendRequestView(APIView):
     def post(self, request):
         from_user = request.user.id
-        print("from_user", from_user)
         to_user_id = request.data.get('to_user_id')
 
         if not to_user_id:
